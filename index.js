@@ -4,7 +4,7 @@ const fetch = require('node-fetch');
 let knownCoins = [];
 
 async function fetchNewZoraNFTs() {
-    // Data simulation
+    // Simulated data
     return [
         {
             tokenId: '123',
@@ -17,11 +17,11 @@ async function fetchNewZoraNFTs() {
 
 async function sendFarcasterCast(message, zoraLink) {
     console.log(`Sending cast to Farcaster: ${message}`);
-    console.log(`Link trading: ${zoraLink}`);
+    console.log(`Trading links: ${zoraLink}`);
 }
 
 async function checkNewCoins() {
-    console.log("Memeriksa koiChecking new coins in Zoran baru di Zora...");
+    console.log("Checking out new coins in Zora...");
     const coins = await fetchNewZoraNFTs();
     for (const coin of coins) {
         const coinId = coin.tokenId;
@@ -35,5 +35,5 @@ async function checkNewCoins() {
     }
 }
 
-setInterval(checkNewCoins, 5 * 60 * 1000);
+setInterval(checkNewCoins, 5 * 1000);
 checkNewCoins();
