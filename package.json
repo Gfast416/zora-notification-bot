@@ -13,7 +13,7 @@
   "dependencies": {
     "@zoralabs/protocol-sdk": "^0.13.5",
     "dotenv": "^16.5.0",
-    "ethers": "^6.13.5",
-    "node-fetch": "^3.3.2"
+    "ethers": "^5.8.0",
+    "node-fetch": "^2.7.0"
   }
 }

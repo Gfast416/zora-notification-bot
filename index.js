@@ -1,76 +1,39 @@
 require('dotenv').config();
 const fetch = require('node-fetch');
 
-// List of known coins
 let knownCoins = [];
 
-// Function to fetch new NFT from Zora via GraphQL
 async function fetchNewZoraNFTs() {
-    const query = `
-        query {
-            tokens(networks: [{ network: ZORA, chain: MAINNET }], sort: { mintedAt: DESC }, pagination: { limit: 10 }) {
-                nodes {
-                    tokenId
-                    name
-                    tokenContract {
-                        address
-                    }
-                    mintedAt
-                }
-            }
+    // Data simulation
+    return [
+        {
+            tokenId: '123',
+            name: 'Simulated NFT',
+            tokenContract: { address: '0xabc123' },
+            mintedAt: new Date().toISOString()
         }
-    `;
-    try {
-        const response = await fetch('https://api.zora.co/graphql', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ query })
-        });
-        const data = await response.json();
-        return data.data.tokens.nodes || [];
-    } catch (error) {
-        console.error('Error fetching Zora NFTs:', error);
-        return [];
-    }
+    ];
 }
 
-async function sendFarcasterCast(message) {
+async function sendFarcasterCast(message, zoraLink) {
     console.log(`Sending cast to Farcaster: ${message}`);
-    // Later replace with Farcaster API
-    /* 
-    const response = await fetch('https://api.farcaster.xyz/v2/casts', {
-        method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${process.env.FARCASTER_API_KEY}`,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ text: message })
-    });
-    const result = await response.json();
-    console.log('Cast dikirim:', result);
-    */
+    console.log(`Link trading: ${zoraLink}`);
 }
 
-// Function to check new coins
 async function checkNewCoins() {
-    console.log("Checking new coins in Zora...");
+    console.log("Memeriksa koiChecking new coins in Zoran baru di Zora...");
     const coins = await fetchNewZoraNFTs();
     for (const coin of coins) {
         const coinId = coin.tokenId;
         if (!knownCoins.includes(coinId)) {
-            console.log(`New coin: ${coin.name || 'Unnamed'}, Address: ${coin.tokenContract.address}`);
+            const message = `New coin: ${coin.name || 'Unnamed'} (ID: ${coinId}, Address: ${coin.tokenContract.address})`;
+            const zoraLink = `https://zora.co/collect/zora:${coin.tokenContract.address}/${coinId}`;
+            console.log(message);
+            await sendFarcasterCast(message, zoraLink);
             knownCoins.push(coinId);
         }
     }
 }
 
-// Function to check the number of mints (placeholder, since GraphQL doesn't provide direct mints data)
-async function checkMintMilestone(coinAddress) {
-    // Note: Mints data requires API or blockchain event
-    console.log(`Checking mints for ${coinAddress} (not yet implemented)`);
-    // Later replace with Zora API or ethers.js to check mints
-}
-
-// Run every 5 seconds
-setInterval(checkNewCoins, 5 * 1000);
+setInterval(checkNewCoins, 5 * 60 * 1000);
 checkNewCoins();
