@@ -11,7 +11,9 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@zoralabs/protocol-sdk": "^0.13.5",
     "dotenv": "^16.5.0",
+    "ethers": "^6.13.5",
     "node-fetch": "^3.3.2"
   }
 }
